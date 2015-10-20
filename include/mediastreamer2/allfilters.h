@@ -144,7 +144,8 @@ typedef enum MSFilterId{
 	MS_QSA_WRITE_ID,
 	MS_MKV_RECORDER_ID,
 	MS_MKV_PLAYER_ID,
-	MS_VAD_DTX_ID
+	MS_VAD_DTX_ID,
+	MS_QT_DISPLAY_ID,
 } MSFilterId;
 
 
