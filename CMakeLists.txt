@@ -91,7 +91,7 @@ cmake_dependent_option(ENABLE_X11 "Enable X11 support." ${ENABLE_X11_DEFAULT_VAL
 cmake_dependent_option(ENABLE_XV "Enable XV support." ${ENABLE_X11_DEFAULT_VALUE} "ENABLE_FFMPEG;UNIX" NO)
 cmake_dependent_option(ENABLE_THEORA "Enable theora video codec support." YES "ENABLE_VIDEO" NO)
 cmake_dependent_option(ENABLE_VPX "Build mediastreamer2 with VPX codec." YES "ENABLE_VIDEO" NO)
-
+cmake_dependent_option(ENABLE_QT5 "Enable Qt5 support." YES "ENABLE_VIDEO" NO)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
