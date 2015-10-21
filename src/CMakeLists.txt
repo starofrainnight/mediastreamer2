@@ -289,7 +289,8 @@ if(ENABLE_VIDEO)
 	if(Qt5Widgets_FOUND)
 		list(APPEND VOIP_SOURCE_FILES 
 			videofilters/qt-display.cpp
-			videofilters/qtdisplaywindow.cpp)
+			videofilters/qtdisplaywindow.cpp
+			videofilters/qtdisplayevent.cpp)
 	endif()
 endif()
 
