@@ -65,7 +65,7 @@ static MSFilterMethod methods[]={
 };
 
 MSFilterDesc ms_qt_display_desc={
-  MS_DRAWDIB_DISPLAY_ID,
+  MS_QT_DISPLAY_ID,
   "MSQtDisplay",
   N_("A video display based on Qt api"),
   MS_FILTER_OTHER,
