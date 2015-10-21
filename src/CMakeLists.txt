@@ -286,7 +286,9 @@ if(ENABLE_VIDEO)
 	if(XV_FOUND)
 		list(APPEND VOIP_SOURCE_FILES videofilters/x11video.c)
 	endif()
-	list(APPEND VOIP_SOURCE_FILES videofilters/qt-display.cpp)
+	if(Qt5Widgets_FOUND)
+		list(APPEND VOIP_SOURCE_FILES videofilters/qt-display.cpp)
+	endif()
 endif()
 
 set(VOIP_GENERATED_SOURCE_FILES
