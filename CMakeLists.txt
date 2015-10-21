@@ -254,6 +254,12 @@ if(ENABLE_SOUND AND NOT(WIN32 OR ENABLE_ALSA OR ENABLE_ARTSC OR ENABLE_MACSND OR
 	message(FATAL_ERROR "Could not find a support sound driver API. Use -DENABLE_SOUND=NO if you don't care about having sound.")
 endif()
 
+if(ENABLE_QT5)
+	find_package(Qt5Widgets COMPONENTS Widgets)
+	if(NOT Qt5Widgets_FOUND)
+		set(ENABLE_QT5 OFF CACHE BOOL "Enable Qt5 support." FORCE)
+	endif()
+endif()
 
 include_directories(
 	include
