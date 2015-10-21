@@ -34,18 +34,18 @@ extern "C"
 
 #include <QMainWindow>
 #include <QApplication>
-#include <qsharedpointer.h>
+#include "qtdisplaywindow.h"
 
 struct QtDisplay {
 public:
-	QSharedPointer<QMainWindow> window;
+	QSharedPointer<QtDisplayWindow> window;
 };
 
 static void qt_display_init(MSFilter  *f){
 	QtDisplay * data = NULL;
 
 	data = new QtDisplay;
-	data->window.reset(new QMainWindow());
+	data->window.reset(new QtDisplayWindow());
 	data->window->moveToThread(QApplication::instance()->thread());
 }
 
