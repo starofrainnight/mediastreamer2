@@ -290,7 +290,8 @@ if(ENABLE_VIDEO)
 		list(APPEND VOIP_SOURCE_FILES 
 			videofilters/qt-display.cpp
 			videofilters/qtdisplaywindow.cpp
-			videofilters/qtdisplayevent.cpp)
+			videofilters/qtdisplayevent.cpp
+			videofilters/qtdisplayresizeevent.cpp)
 	endif()
 endif()
 
