@@ -32,10 +32,25 @@ extern "C"
 
 };
 
+#include <QMainWindow>
+#include <QApplication>
+#include <qsharedpointer.h>
+
+struct QtDisplay {
+public:
+	QSharedPointer<QMainWindow> window;
+};
+
 static void qt_display_init(MSFilter  *f){
+	QtDisplay * data = NULL;
+
+	data = new QtDisplay;
+	data->window.reset(new QMainWindow());
+	data->window->moveToThread(QApplication::instance()->thread());
 }
 
 static void qt_display_uninit(MSFilter *f){
+	delete (QtDisplay*)f->data;
 }
 
 static void qt_display_preprocess(MSFilter *f){
