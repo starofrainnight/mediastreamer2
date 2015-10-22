@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "qtdisplaywindow.moc"
 #include "qtdisplaywindow.h"
 #include "qtdisplayevent.h"
+#include "qtdisplayresizeevent.h"
 #include <QPainter>
 
 QtDisplayWindow::QtDisplayWindow(QWidget *parent) :
@@ -36,6 +37,14 @@ bool QtDisplayWindow::event(QEvent * e)
 		QPainter painter(this);
 
 		painter.drawImage(0, 0, event->image());
+		event->accept();
+		return true;
+	}
+	else if(e->type() == QtDisplayResizeEvent::DisplayResize)
+	{
+		QtDisplayResizeEvent * event = (QtDisplayResizeEvent*)e;
+		this->resize(event->size());
+		event->accept();
 		return true;
 	}
 
