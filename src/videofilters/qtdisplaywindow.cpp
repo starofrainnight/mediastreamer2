@@ -20,9 +20,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "qtdisplaywindow.moc"
 #include "qtdisplaywindow.h"
+#include "qtdisplayevent.h"
+#include <QPainter>
 
 QtDisplayWindow::QtDisplayWindow(QWidget *parent) :
     QMainWindow(parent)
 {
 }
 
+bool QtDisplayWindow::event(QEvent * e)
+{
+	if(e->type() == QtDisplayEvent::Display)
+	{
+		QtDisplayEvent * event = (QtDisplayEvent*)e;
+		QPainter painter(this);
+
+		painter.drawImage(0, 0, event->image());
+		return true;
+	}
+
+	return QMainWindow::event(e);
+}

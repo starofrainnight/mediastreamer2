@@ -29,6 +29,7 @@ class QtDisplayWindow : public QMainWindow
 
 public:
     explicit QtDisplayWindow(QWidget *parent = 0);
+    bool event(QEvent * e);
 };
 
 #endif /* SRC_VIDEOFILTERS_QTDISPLAYWINDOW_H_INCLUDED_31A05A4C77A611E5B7B300E04C68002D */
