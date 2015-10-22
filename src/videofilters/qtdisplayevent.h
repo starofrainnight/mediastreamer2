@@ -22,16 +22,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define INCLUDE_MEDIASTREAMER2_QTDISPLAYEVENT_H_INCLUDED_FCF355F077B511E58F2B00E04C68002D
 
 #include <QEvent>
+#include <QImage>
 
 class QtDisplayEvent : public QEvent
 {
 public:
-	QtDisplayEvent(Type type);
+	QtDisplayEvent(Type type, QImage image);
 
 	/**
 	 * Display event id;
 	 */
 	static int Display;
+
+private:
+	QImage m_image;
 };
 
 #endif /* INCLUDE_MEDIASTREAMER2_QTDISPLAYEVENT_H_INCLUDED_FCF355F077B511E58F2B00E04C68002D */
