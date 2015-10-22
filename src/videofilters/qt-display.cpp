@@ -217,6 +217,16 @@ static int set_vsize(MSFilter *f, void *data){
 	return 0;
 }
 
+static int get_native_window_id(MSFilter *f, void *data){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	if(obj->auto_window) {
+		*(long*)data=(long)obj->window.data();
+	} else {
+		*(unsigned long*)data=MS_FILTER_VIDEO_NONE;
+	}
+	return 0;
+}
+
 static void qt_display_init(MSFilter  *f){
 	QtDisplay * data = NULL;
 
@@ -374,7 +384,7 @@ static void qt_display_process(MSFilter *f){
 static MSFilterMethod methods[]={
 	{	MS_FILTER_GET_VIDEO_SIZE			, get_vsize	},
 	{	MS_FILTER_SET_VIDEO_SIZE			, set_vsize	},
-
+	{	MS_VIDEO_DISPLAY_GET_NATIVE_WINDOW_ID, get_native_window_id },
 	{	0	,NULL}
 };
 
