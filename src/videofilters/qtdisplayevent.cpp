@@ -27,3 +27,8 @@ QtDisplayEvent::QtDisplayEvent(Type type, QImage image)
 {
 }
 
+QImage QtDisplayEvent::image()
+{
+	return m_image;
+}
+

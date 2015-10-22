@@ -29,6 +29,8 @@ class QtDisplayEvent : public QEvent
 public:
 	QtDisplayEvent(Type type, QImage image);
 
+	QImage image();
+
 	/**
 	 * Display event id;
 	 */
