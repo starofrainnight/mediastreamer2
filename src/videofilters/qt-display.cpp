@@ -205,6 +205,17 @@ static void draw_local_view_frame(QImage image, MSVideoSize wsize, MSRect localr
 			QPoint(localrect.x+localrect.w+LOCAL_BORDER_SIZE, localrect.y+localrect.h+LOCAL_BORDER_SIZE)));
 }
 
+static int get_vsize(MSFilter *f, void *data){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	*(MSVideoSize*)data=obj->wsize;
+	return 0;
+}
+
+static int set_vsize(MSFilter *f, void *data){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	obj->wsize=*(MSVideoSize*)data;
+	return 0;
+}
 
 static void qt_display_init(MSFilter  *f){
 	QtDisplay * data = NULL;
@@ -361,6 +372,9 @@ static void qt_display_process(MSFilter *f){
 }
 
 static MSFilterMethod methods[]={
+	{	MS_FILTER_GET_VIDEO_SIZE			, get_vsize	},
+	{	MS_FILTER_SET_VIDEO_SIZE			, set_vsize	},
+
 	{	0	,NULL}
 };
 
