@@ -227,6 +227,44 @@ static int get_native_window_id(MSFilter *f, void *data){
 	return 0;
 }
 
+
+static int enable_autofit(MSFilter *f, void *data){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	obj->autofit=*(int*)data;
+	return 0;
+}
+
+static int enable_mirroring(MSFilter *f, void *data){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	obj->mirroring=*(int*)data;
+	return 0;
+}
+
+static int set_corner(MSFilter *f, void *data){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	obj->sv_corner=*(int*)data;
+	obj->need_repaint=TRUE;
+	return 0;
+}
+
+static int set_scalefactor(MSFilter *f,void *arg){
+	QtDisplay *obj=(QtDisplay*)f->data;
+	ms_filter_lock(f);
+	obj->sv_scalefactor = *(float*)arg;
+	if (obj->sv_scalefactor<0.5f)
+		obj->sv_scalefactor = 0.5f;
+	ms_filter_unlock(f);
+	return 0;
+}
+
+static int set_background_color(MSFilter *f,void *arg){
+	QtDisplay *s=(QtDisplay*)f->data;
+	s->background_color[0]=((int*)arg)[0];
+	s->background_color[1]=((int*)arg)[1];
+	s->background_color[2]=((int*)arg)[2];
+	return 0;
+}
+
 static void qt_display_init(MSFilter  *f){
 	QtDisplay * data = NULL;
 
@@ -385,6 +423,11 @@ static MSFilterMethod methods[]={
 	{	MS_FILTER_GET_VIDEO_SIZE			, get_vsize	},
 	{	MS_FILTER_SET_VIDEO_SIZE			, set_vsize	},
 	{	MS_VIDEO_DISPLAY_GET_NATIVE_WINDOW_ID, get_native_window_id },
+	{	MS_VIDEO_DISPLAY_ENABLE_AUTOFIT		,	enable_autofit	},
+	{	MS_VIDEO_DISPLAY_ENABLE_MIRRORING	,	enable_mirroring},
+	{	MS_VIDEO_DISPLAY_SET_LOCAL_VIEW_MODE	, set_corner },
+	{	MS_VIDEO_DISPLAY_SET_LOCAL_VIEW_SCALEFACTOR	, set_scalefactor },
+	{	MS_VIDEO_DISPLAY_SET_BACKGROUND_COLOR    ,  set_background_color},
 	{	0	,NULL}
 };
 
