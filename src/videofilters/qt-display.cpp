@@ -57,8 +57,8 @@ typedef struct Yuv2RgbCtx{
 struct QtDisplay {
 public:
 	QSharedPointer<QtDisplayWindow> window;
-	QImage mainImage;
-	QImage localImage;
+	QImage main_mage;
+	QImage local_mage;
 	MSVideoSize wsize; /*the initial requested window size*/
 	MSVideoSize vsize; /*the video size received for main input*/
 	MSVideoSize lsize; /*the video size received for local display */
@@ -287,8 +287,8 @@ static void qt_display_process(MSFilter *f){
 	MSVideoSize wsize; /* the window size*/
 	MSVideoSize vsize;
 	MSVideoSize lsize; /*local preview size*/
-	QImage * mainImagePtr = NULL;
-	QImage * localImagePtr = NULL;
+	QImage * main_image_ptr = NULL;
+	QImage * local_image_ptr = NULL;
 	MSRect mainrect;
 	MSRect localrect;
 	MSPicture mainpic;
@@ -308,8 +308,8 @@ static void qt_display_process(MSFilter *f){
 		goto end;
 	}
 
-	mainImagePtr = &obj->mainImage;
-	localImagePtr = &obj->localImage;
+	main_image_ptr = &obj->main_mage;
+	local_image_ptr = &obj->local_mage;
 
 	wsize.width=rect.width();
 	wsize.height=rect.height();
@@ -335,7 +335,7 @@ static void qt_display_process(MSFilter *f){
 							QSize(mainpic.w, mainpic.h));
 
 					QApplication::sendEvent(obj->window.data(), &event);
-					obj->mainImage = QImage(mainpic.w, mainpic.h, QImage::Format_RGB888);
+					obj->main_mage = QImage(mainpic.w, mainpic.h, QImage::Format_RGB888);
 				}
 				//in all case repaint the background.
 				obj->need_repaint=TRUE;
@@ -364,15 +364,15 @@ static void qt_display_process(MSFilter *f){
 		}
 		if (obj->locview.rgb==NULL){
 			 /*One layer: we can draw directly on the displayed surface*/
-			localImagePtr = mainImagePtr;
+			local_image_ptr = main_image_ptr;
 			if (obj->need_repaint) {
-				draw_background(*localImagePtr, wsize, mainrect, obj->background_color);
+				draw_background(*local_image_ptr, wsize, mainrect, obj->background_color);
 			}
 		}else{
 			/* in this case we need to stack several layers*/
 			/*Create a second DC and bitmap to draw to a buffer that will be blitted to screen
 			once all drawing is finished. This avoids some blinking while composing the image*/
-			draw_background(*localImagePtr, wsize, mainrect, obj->background_color);
+			draw_background(*local_image_ptr, wsize, mainrect, obj->background_color);
 		}
 
 		if (obj->need_repaint){
@@ -380,33 +380,33 @@ static void qt_display_process(MSFilter *f){
 			obj->need_repaint=FALSE;
 		}
 		if (main_im!=NULL || obj->locview.rgb!=NULL) {
-			yuv2rgb_draw(&obj->mainview, *localImagePtr, mainrect.x,mainrect.y);
+			yuv2rgb_draw(&obj->mainview, *local_image_ptr, mainrect.x,mainrect.y);
 		}
 		if (obj->locview.rgb!=NULL) {
-			draw_local_view_frame(*localImagePtr,wsize,localrect);
-			yuv2rgb_draw(&obj->locview, *localImagePtr,localrect.x,localrect.y);
+			draw_local_view_frame(*local_image_ptr,wsize,localrect);
+			yuv2rgb_draw(&obj->locview, *local_image_ptr,localrect.x,localrect.y);
 		}
-		if (mainImagePtr!=localImagePtr){
+		if (main_image_ptr!=local_image_ptr){
 			if (main_im==NULL && !repainted){
 				/* Blitting local rect only */
-				QPainter painter(mainImagePtr);
+				QPainter painter(main_image_ptr);
 
 				painter.drawImage(
 						QRect(localrect.x-LOCAL_BORDER_SIZE, localrect.y-LOCAL_BORDER_SIZE, localrect.w+LOCAL_BORDER_SIZE,localrect.h+LOCAL_BORDER_SIZE),
-						*localImagePtr);
+						*local_image_ptr);
 			}else{
 				/*Blitting the entire window */
-				QPainter painter(mainImagePtr);
+				QPainter painter(main_image_ptr);
 
 				painter.drawImage(
 						QRect(0, 0, wsize.width, wsize.height),
-						*localImagePtr);
+						*local_image_ptr);
 			}
 		}
 		/*else using direct blitting to screen*/
 
 		if (obj->mainview.rgb) {
-			QtDisplayEvent event((QEvent::Type)QtDisplayEvent::Display, *mainImagePtr);
+			QtDisplayEvent event((QEvent::Type)QtDisplayEvent::Display, *main_image_ptr);
 			QApplication::sendEvent(obj->window.data(), &event);
 		}
 	}
