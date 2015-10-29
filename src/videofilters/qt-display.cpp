@@ -268,9 +268,11 @@ static int set_background_color(MSFilter *f,void *arg){
 static void qt_display_init(MSFilter  *f){
 	QtDisplay * data = NULL;
 
-	data = new QtDisplay;
+	data = new QtDisplay();
 	data->window.reset(new QtDisplayWindow());
 	data->window->moveToThread(QApplication::instance()->thread());
+
+	f->data = data;
 }
 
 static void qt_display_uninit(MSFilter *f){
