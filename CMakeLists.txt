@@ -258,7 +258,10 @@ if(ENABLE_QT5)
 	find_package(Qt5Widgets COMPONENTS Widgets)
 	if(NOT Qt5Widgets_FOUND)
 		set(ENABLE_QT5 OFF CACHE BOOL "Enable Qt5 support." FORCE)
-	else()	
+	else()
+		# Enable qt5 display filter	
+		set(HAVE_QT5 ON)
+		
 		# Find includes in corresponding build directories
 		set(CMAKE_INCLUDE_CURRENT_DIR ON)
 		# Instruct CMake to run moc automatically when needed.

@@ -201,7 +201,9 @@ void video_stream_iterate(VideoStream *stream){
 }
 
 const char *video_stream_get_default_video_renderer(void){
-#ifdef WIN32
+#if defined(HAVE_QT5)
+	return "MSQtDisplay";
+#elif defined(WIN32)
 	return "MSDrawDibDisplay";
 #elif defined(ANDROID)
 	return "MSAndroidDisplay";
