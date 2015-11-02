@@ -38,6 +38,7 @@ extern "C"
 #include <QImage>
 #include <QPainter>
 #include <QSharedPointer>
+#include <QColor>
 #include "qtdisplayevent.h"
 #include "qtdisplayresizeevent.h"
 #include "qtdisplaywindow.h"
@@ -289,7 +290,15 @@ static void qt_display_init(MSFilter  *f){
 	data->own_window=TRUE;
 	data->auto_window=TRUE;
 	data->main_image = QImage(data->wsize.width, data->wsize.height, QImage::Format_RGB888);
+	data->main_image.fill(qRgb(
+			data->background_color[0],
+			data->background_color[1],
+			data->background_color[2]));
 	data->local_image = QImage(data->lsize.width, data->lsize.height, QImage::Format_RGB888);
+	data->local_image.fill(qRgb(
+			data->background_color[0],
+			data->background_color[1],
+			data->background_color[2]));
 
 	{
 		QtDisplayResizeEvent event(
@@ -368,6 +377,10 @@ static void qt_display_process(MSFilter *f){
 
 					QApplication::sendEvent(obj->window.data(), &event);
 					obj->main_image = QImage(wsize.width, wsize.height, QImage::Format_RGB888);
+					obj->main_image.fill(qRgb(
+							obj->background_color[0],
+							obj->background_color[1],
+							obj->background_color[2]));
 				}
 				//in all case repaint the background.
 				obj->need_repaint=TRUE;
