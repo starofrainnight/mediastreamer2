@@ -291,6 +291,14 @@ static void qt_display_init(MSFilter  *f){
 	data->main_image = QImage(data->wsize.width, data->wsize.height, QImage::Format_RGB888);
 	data->local_image = QImage(data->lsize.width, data->lsize.height, QImage::Format_RGB888);
 
+	{
+		QtDisplayResizeEvent event(
+				(QEvent::Type)QtDisplayResizeEvent::DisplayResize,
+				QSize(data->wsize.width, data->wsize.height));
+
+		QApplication::sendEvent(data->window.data(), &event);
+	}
+
 	f->data = data;
 }
 
