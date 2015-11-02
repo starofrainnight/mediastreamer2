@@ -57,8 +57,8 @@ typedef struct Yuv2RgbCtx{
 struct QtDisplay {
 public:
 	QSharedPointer<QtDisplayWindow> window;
-	QImage main_mage;
-	QImage local_mage;
+	QImage main_image;
+	QImage local_image;
 	MSVideoSize wsize; /*the initial requested window size*/
 	MSVideoSize vsize; /*the video size received for main input*/
 	MSVideoSize lsize; /*the video size received for local display */
@@ -327,8 +327,8 @@ static void qt_display_process(MSFilter *f){
 		goto end;
 	}
 
-	main_image_ptr = &obj->main_mage;
-	local_image_ptr = &obj->local_mage;
+	main_image_ptr = &obj->main_image;
+	local_image_ptr = &obj->local_image;
 
 	wsize.width=rect.width();
 	wsize.height=rect.height();
@@ -354,7 +354,7 @@ static void qt_display_process(MSFilter *f){
 							QSize(mainpic.w, mainpic.h));
 
 					QApplication::sendEvent(obj->window.data(), &event);
-					obj->main_mage = QImage(mainpic.w, mainpic.h, QImage::Format_RGB888);
+					obj->main_image = QImage(mainpic.w, mainpic.h, QImage::Format_RGB888);
 				}
 				//in all case repaint the background.
 				obj->need_repaint=TRUE;
