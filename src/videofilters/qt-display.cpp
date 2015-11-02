@@ -271,6 +271,23 @@ static void qt_display_init(MSFilter  *f){
 	data = new QtDisplay();
 	data->window.reset(new QtDisplayWindow());
 	data->window->moveToThread(QApplication::instance()->thread());
+	data->wsize.width=MS_VIDEO_SIZE_CIF_W;
+	data->wsize.height=MS_VIDEO_SIZE_CIF_H;
+	data->vsize.width=MS_VIDEO_SIZE_CIF_W;
+	data->vsize.height=MS_VIDEO_SIZE_CIF_H;
+	data->lsize.width=MS_VIDEO_SIZE_CIF_W;
+	data->lsize.height=MS_VIDEO_SIZE_CIF_H;
+	yuv2rgb_init(&data->mainview);
+	yuv2rgb_init(&data->locview);
+	data->sv_corner=0; /* bottom right*/
+	data->sv_scalefactor=SCALE_FACTOR;
+	data->sv_posx=data->sv_posy=SELVIEW_POS_INACTIVE;
+	data->background_color[0]=data->background_color[1]=data->background_color[2]=0;
+	data->need_repaint=FALSE;
+	data->autofit=TRUE;
+	data->mirroring=FALSE;
+	data->own_window=TRUE;
+	data->auto_window=TRUE;
 
 	f->data = data;
 }
