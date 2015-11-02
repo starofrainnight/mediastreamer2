@@ -359,12 +359,15 @@ static void qt_display_process(MSFilter *f){
 			if (obj->vsize.width!=mainpic.w || obj->vsize.height!=mainpic.h){
 				ms_message("Detected video resolution changed to %ix%i",mainpic.w,mainpic.h);
 				if (obj->autofit && (mainpic.w>wsize.width || mainpic.h>wsize.height) ){
+					wsize.width=mainpic.w;
+					wsize.height=mainpic.h;
+
 					QtDisplayResizeEvent event(
 							(QEvent::Type)QtDisplayResizeEvent::DisplayResize,
-							QSize(mainpic.w, mainpic.h));
+							QSize(wsize.width, wsize.height));
 
 					QApplication::sendEvent(obj->window.data(), &event);
-					obj->main_image = QImage(mainpic.w, mainpic.h, QImage::Format_RGB888);
+					obj->main_image = QImage(wsize.width, wsize.height, QImage::Format_RGB888);
 				}
 				//in all case repaint the background.
 				obj->need_repaint=TRUE;
