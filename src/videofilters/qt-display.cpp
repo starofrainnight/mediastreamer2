@@ -288,6 +288,8 @@ static void qt_display_init(MSFilter  *f){
 	data->mirroring=FALSE;
 	data->own_window=TRUE;
 	data->auto_window=TRUE;
+	data->main_image = QImage(data->wsize.width, data->wsize.height, QImage::Format_RGB888);
+	data->local_image = QImage(data->lsize.width, data->lsize.height, QImage::Format_RGB888);
 
 	f->data = data;
 }
