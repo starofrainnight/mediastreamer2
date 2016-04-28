@@ -255,7 +255,7 @@ if(ENABLE_SOUND AND NOT(WIN32 OR ENABLE_ALSA OR ENABLE_ARTSC OR ENABLE_MACSND OR
 endif()
 
 if(ENABLE_QT5)
-	find_package(Qt5Widgets COMPONENTS Widgets)
+	find_package(Qt5Widgets)
 	if(NOT Qt5Widgets_FOUND)
 		set(ENABLE_QT5 OFF CACHE BOOL "Enable Qt5 support." FORCE)
 	else()
