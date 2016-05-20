@@ -107,7 +107,7 @@ static void yuv2rgb_uninit(Yuv2RgbCtx *ctx){
 static void yuv2rgb_prepare(Yuv2RgbCtx *ctx, MSVideoSize src, MSVideoSize dst){
 	if (ctx->sws!=NULL) yuv2rgb_uninit(ctx);
 	ctx->sws=ms_scaler_create_context(src.width,src.height,MS_YUV420P,
-			dst.width,dst.height, MS_RGB24_REV,
+            dst.width,dst.height, MS_RGB24,
 			MS_SCALER_METHOD_BILINEAR);
 	ctx->dsize=dst;
 	ctx->ssize=src;
