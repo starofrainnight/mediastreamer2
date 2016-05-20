@@ -39,6 +39,7 @@ extern "C"
 #include <QPainter>
 #include <QSharedPointer>
 #include <QColor>
+#include <QShowEvent>
 #include "qtdisplayevent.h"
 #include "qtdisplayresizeevent.h"
 #include "qtdisplaywindow.h"
@@ -140,13 +141,13 @@ static void yuv2rgb_process(Yuv2RgbCtx *ctx, MSPicture *src, MSVideoSize dstsize
 	}
 }
 
-static void yuv2rgb_draw(Yuv2RgbCtx *ctx, QImage image, int dstx, int dsty){
+static void yuv2rgb_draw(Yuv2RgbCtx *ctx, QImage *image, int dstx, int dsty){
 	if (ctx->rgb){
-		QPainter painter(&image);
+        QPainter painter(image);
 		QImage srcImage(ctx->rgb, ctx->dsize.width, ctx->dsize.height, QImage::Format_RGB888);
 
 		painter.drawImage(
-				QRect(dstx, dsty, image.width(), image.height()),
+                QRect(dstx, dsty, image->width(), image->height()),
 				srcImage,
 				QRect(0, 0, ctx->dsize.width, ctx->dsize.height));
 	}
@@ -337,6 +338,8 @@ static void qt_display_process(MSFilter *f){
 	int corner=obj->sv_corner;
 	float scalefactor=obj->sv_scalefactor;
 
+    ms_filter_lock(f);
+
 	if (!obj->window) {
 		goto end;
 	}
@@ -425,11 +428,11 @@ static void qt_display_process(MSFilter *f){
 			obj->need_repaint=FALSE;
 		}
 		if (main_im!=NULL || obj->locview.rgb!=NULL) {
-			yuv2rgb_draw(&obj->mainview, *local_image_ptr, mainrect.x,mainrect.y);
+            yuv2rgb_draw(&obj->mainview, local_image_ptr, mainrect.x,mainrect.y);
 		}
 		if (obj->locview.rgb!=NULL) {
 			draw_local_view_frame(*local_image_ptr,wsize,localrect);
-			yuv2rgb_draw(&obj->locview, *local_image_ptr,localrect.x,localrect.y);
+            yuv2rgb_draw(&obj->locview, local_image_ptr,localrect.x,localrect.y);
 		}
 		if (main_image_ptr!=local_image_ptr){
 			if (main_im==NULL && !repainted){
@@ -458,10 +461,13 @@ static void qt_display_process(MSFilter *f){
 
 	end:
 
+    ms_filter_unlock(f);
+
 	if (f->inputs[0]!=NULL)
 		ms_queue_flush(f->inputs[0]);
 	if (f->inputs[1]!=NULL)
 		ms_queue_flush(f->inputs[1]);
+
 }
 
 static MSFilterMethod methods[]={
