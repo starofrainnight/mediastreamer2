@@ -22,7 +22,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define SRC_VIDEOFILTERS_QTDISPLAYWINDOW_H_INCLUDED_31A05A4C77A611E5B7B300E04C68002D
 
 #include <QMainWindow>
+#include <QImage>
 
+class QPaintEvent;
 class QtDisplayWindow : public QMainWindow
 {
     Q_OBJECT
@@ -30,6 +32,13 @@ class QtDisplayWindow : public QMainWindow
 public:
     explicit QtDisplayWindow(QWidget *parent = 0);
     bool event(QEvent * e);
+    void paintEvent(QPaintEvent * event);
+
+private:
+    /**
+     * Image will needs to paint on window, passed by QtDisplayEvent.
+     */
+    QImage m_image;
 };
 
 #endif /* SRC_VIDEOFILTERS_QTDISPLAYWINDOW_H_INCLUDED_31A05A4C77A611E5B7B300E04C68002D */

@@ -23,10 +23,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "qtdisplayevent.h"
 #include "qtdisplayresizeevent.h"
 #include <QPainter>
+#include <QDebug>
+#include <QPaintEvent>
 
 QtDisplayWindow::QtDisplayWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+	this->show();
 }
 
 bool QtDisplayWindow::event(QEvent * e)
@@ -34,9 +37,13 @@ bool QtDisplayWindow::event(QEvent * e)
 	if(e->type() == QtDisplayEvent::Display)
 	{
 		QtDisplayEvent * event = (QtDisplayEvent*)e;
-		QPainter painter(this);
 
-		painter.drawImage(0, 0, event->image());
+		if (this->isVisible())
+		{
+			m_image = event->image();
+			this->repaint();
+		};
+
 		event->accept();
 		return true;
 	}
@@ -49,4 +56,10 @@ bool QtDisplayWindow::event(QEvent * e)
 	}
 
 	return QMainWindow::event(e);
+}
+
+void QtDisplayWindow::paintEvent(QPaintEvent * event)
+{
+	QPainter painter(this);
+	painter.drawImage(0, 0, this->m_image);
 }
